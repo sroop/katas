@@ -6,4 +6,12 @@ class Superfoo
     @data = {}
   end
 
+  def buzz
+    @data[:buzz]
+  end
+
+  def buzz=(value)
+    @data[:buzz] = value
+  end
+
 end
