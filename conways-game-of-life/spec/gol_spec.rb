@@ -14,6 +14,7 @@ describe "Conways Game of Life" do
       expect(cell.is_a?(Cell)).to eq(true)
       expect(cell.x).to eq(1)
       expect(cell.y).to eq(5)
+      expect(cell.world).to eq(subject.world)
     end
 
   end
