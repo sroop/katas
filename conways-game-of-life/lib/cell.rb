@@ -14,6 +14,8 @@ class Cell
     world.cells.each do |cell|
       if self.x == cell.x && self.y == (cell.y - 1)
         @neighbours << cell
+      elsif self.x && (cell.x - 1) && self.y == (cell.y - 1)
+        @neighbours << cell
       end
     end
     @neighbours

@@ -22,6 +22,11 @@ describe "Conways Game of Life" do
       expect(subject.neighbours.count).to eq(1)
     end
 
+    it "detects a neighbouring cell to the north-east" do
+      cell = subject.spawn_at_coordinate(1,1)
+      expect(subject.neighbours.count).to eq(1)
+    end
+
   end
 
   context "Rule #1" do
