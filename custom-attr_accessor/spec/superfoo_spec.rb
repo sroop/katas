@@ -2,38 +2,107 @@ require 'superfoo'
 
 describe "Superfoo" do
 
-  let(:superfoo) { Superfoo.new }
+  context "Superfoo" do
 
-  context "Data can be added to and retrieved from superfoo" do
-
-    it "using hash syntax" do
-      superfoo.data[:buzz] = "BUZZ"
-      expect(superfoo.data[:buzz]).to eq("BUZZ")
+    it "is defined as a class" do
+      expect(Superfoo.new).to be_instance_of(Superfoo)
     end
 
-    it "using basic getter/setters" do
-      superfoo.buzz = "BUZZ"
-      expect(superfoo.buzz).to eq("BUZZ")
+    it "defines the method 'data_accessor'" do
+      expect(Superfoo).to respond_to(:data_accessor)
     end
 
   end
 
-  context "data_accessor :banana, :apple" do
+  context "Superfoo instance" do
+
+    let(:superfoo) { Superfoo.new }
+
+    it "defines the method 'data'" do
+      expect(superfoo).to respond_to(:data)
+    end
+
+    it "defines the method 'data='" do
+      expect(superfoo).to respond_to(:data=)
+    end
+
+    it "initializes data with an empty hash" do
+      expect(superfoo.data).to eq({})
+    end
+
+    it "does not define the method 'data_accessor'" do
+      expect(superfoo).to_not respond_to(:data_accessor)
+    end
+
+  end
+
+  context "Subfoo" do
+
+    it "defines the method 'data_accessor'" do
+      expect(Subfoo).to respond_to(:data_accessor)
+    end
+
+  end
+
+  context "Subfoo instance" do
 
     let(:subfoo) { Subfoo.new }
 
-    it "Sets the key :banana to the value 'yellow'" do
-      subfoo.banana = "yellow"
-      expect(subfoo.banana).to eq("yellow")
+    it "defines the method 'data'" do
+      expect(subfoo).to respond_to(:data)
     end
 
-    it "Sets the key :apple to the value 'green'" do
+    it "defines the method 'data='" do
+      expect(subfoo).to respond_to(:data=)
+    end
+
+    it "initializes data with an empty hash" do
+      expect(subfoo.data).to eq({})
+    end
+
+    it "does not define the method 'data_accessor'" do
+      expect(subfoo).to_not respond_to(:data_accessor)
+    end
+
+    it "defines the method 'banana'" do
+      expect(subfoo).to respond_to(:banana)
+    end
+
+    it "defines the method 'banana='" do
+      expect(subfoo).to respond_to(:banana=)
+    end
+
+    it "defines the method 'apple'" do
+      expect(subfoo).to respond_to(:apple)
+    end
+
+    it "defines the method 'apple='" do
+      expect(subfoo).to respond_to(:apple=)
+    end
+
+    it "does not define the method 'orange'" do
+      expect(subfoo).to_not respond_to(:orange)
+      expect{subfoo.orange = "orange"}.to raise_error(NoMethodError)
+    end
+
+    it "does not define the method 'orange='" do
+      expect(subfoo).to_not respond_to(:orange=)
+    end
+
+    it "starts with nil values" do
+      expect(subfoo.banana).to eq(nil)
+      expect(subfoo.apple).to eq(nil)
+    end
+
+    it "sets and gets values" do
+      subfoo.banana = "yellow"
       subfoo.apple = "green"
+      expect(subfoo.banana).to eq("yellow")
       expect(subfoo.apple).to eq("green")
     end
 
-    it "Doesn't set the key :orange to the value 'orange'" do
-      expect{subfoo.orange = "orange"}.to raise_error(NoMethodError)
+    it "only has the @data instance variable" do
+      expect(subfoo.instance_variables).to eq([:@data])
     end
 
   end
