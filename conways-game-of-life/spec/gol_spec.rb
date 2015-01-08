@@ -27,13 +27,50 @@ describe "Conways Game of Life" do
       expect(subject.neighbours.count).to eq(1)
     end
 
+    it "detects a neighbouring cell to the east" do
+      cell = subject.spawn_at_coordinate(1,0)
+      expect(subject.neighbours.count).to eq(1)
+    end
+
+    it "detects a neighbouring cell to the south-east" do
+      cell = subject.spawn_at_coordinate(1,-1)
+      expect(subject.neighbours.count).to eq(1)
+    end
+
+    it "detects a neighbouring cell to the south" do
+      cell = subject.spawn_at_coordinate(0,-1)
+      expect(subject.neighbours.count).to eq(1)
+    end
+
+    it "detects a neighbouring cell to the south-west" do
+      cell = subject.spawn_at_coordinate(-1,-1)
+      expect(subject.neighbours.count).to eq(1)
+    end
+
+    it "detects a neighbouring cell to the west" do
+      cell = subject.spawn_at_coordinate(-1,0)
+      expect(subject.neighbours.count).to eq(1)
+    end
+
+    it "detects a neighbouring cell to the north-west" do
+      cell = subject.spawn_at_coordinate(1,-1)
+      expect(subject.neighbours.count).to eq(1)
+    end
+
+    it "cannot detect a cell that isn't a neighbour" do
+      cell = subject.spawn_at_coordinate(2,0)
+      expect(cell.neighbours.count).to eq(0)
+    end
+
   end
 
   context "Rule #1" do
 
+    subject { Cell.new(world) }
+
     it "Any live cell with fewer than two live neighbours dies, as if caused by under-population" do
       cell = Cell.new(world)
-      # expect(cell.neighbours.count).to eq(0)
+      expect(cell.neighbours.count).to eq(0)
     end
 
   end
