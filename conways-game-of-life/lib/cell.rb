@@ -10,7 +10,13 @@ class Cell
   end
 
   def neighbours
-    []
+    @neighbours = []
+    world.cells.each do |cell|
+      if self.x == cell.x && self.y == (cell.y - 1)
+        @neighbours << cell
+      end
+    end
+    @neighbours
   end
 
   def spawn_at_coordinate(x, y)
