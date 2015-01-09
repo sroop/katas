@@ -15,7 +15,7 @@ class Cell
       unless self.equal?(cell)
         (-1..1).each do |x|
           (-1..1).each do |y|
-            if self.x == cell.x + x && self.y == cell.y + y
+            if [self.x, self.y] == [cell.x + x, cell.y + y]
               @neighbours << cell
             end
           end
