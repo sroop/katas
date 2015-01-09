@@ -12,30 +12,14 @@ class Cell
   def neighbours
     @neighbours = []
     world.cells.each do |cell|
-      #North
-      if self.x == cell.x && self.y == (cell.y - 1)
-        @neighbours << cell
-      #North-East
-      elsif self.x && (cell.x - 1) && self.y == (cell.y - 1)
-        @neighbours << cell
-      #East
-      elsif self.x == cell.x - 1 && self.y == cell.y
-        @neighbours << cell
-      #South-East
-      elsif self.x == cell.x - 1 && self.y == cell.y + 1
-        @neighbours << cell
-      #South
-      elsif self.x == cell.x && self.y == cell.y + 1
-        @neighbours << cell
-      #South-West
-      elsif self.x == cell.x + 1 && self.y == cell.y + 1
-        @neighbours << cell
-      #West
-      elsif self.x == cell.x + 1 && self.y == cell.y
-        @neighbours << cell
-      #North-West
-      elsif self.x == cell.x - 1 && self.y == cell.y + 1
-        @neighbours << cell
+      unless self.equal?(cell)
+        (-1..1).each do |x|
+          (-1..1).each do |y|
+            if self.x == cell.x + x && self.y == cell.y + y
+              @neighbours << cell
+            end
+          end
+        end
       end
     end
     @neighbours
