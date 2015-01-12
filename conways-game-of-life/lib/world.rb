@@ -10,6 +10,8 @@ class World
     cells.each do | cell |
       if cell.neighbours.count < 2
         cell.die!
+      elsif cell.neighbours.count > 3
+        cell.die!
       end
     end
   end

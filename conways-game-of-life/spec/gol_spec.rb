@@ -99,5 +99,19 @@ describe "Conways Game of Life" do
 
   end
 
+  context "Rule #3" do
+
+    it "Any live cell with more than three live neighbours dies, as if by overcrowding" do
+      cell1 = subject.spawn_at_coordinate(1,0)
+      cell2 = subject.spawn_at_coordinate(-1,0)
+      cell3 = subject.spawn_at_coordinate(1,1)
+      cell4 = subject.spawn_at_coordinate(1, -1)
+      expect(subject.neighbours.count).to eq(4)
+      world.tick!
+      expect(subject).to be_dead
+    end
+
+  end
+
 end
 
