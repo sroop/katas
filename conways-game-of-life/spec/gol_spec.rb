@@ -86,15 +86,25 @@ describe "Conways Game of Life" do
   context "Rule #2" do
 
     it "Any live cell with two or three live neighbours lives on to the next generation" do
-      cell = subject.spawn_at_coordinate(1,0)
+      cell1 = subject.spawn_at_coordinate(1,0)
       cell2 = subject.spawn_at_coordinate(-1,0)
       expect(subject.neighbours.count).to eq(2)
-      expect(cell.neighbours.count).to eq(1)
+      expect(cell1.neighbours.count).to eq(1)
       expect(cell2.neighbours.count).to eq(1)
+
       world.tick!
+
       expect(subject).to_not be_dead
-      expect(cell).to be_dead
+      expect(cell1).to be_dead
       expect(cell2).to be_dead
+
+      new_cell1 = subject.spawn_at_coordinate(1,1)
+      new_cell2 = subject.spawn_at_coordinate(1,-1)
+      new_cell3 = subject.spawn_at_coordinate(-1,1)
+
+      world.tick!
+
+      expect(subject).to_not be_dead
     end
 
   end
