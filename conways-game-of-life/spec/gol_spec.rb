@@ -4,10 +4,9 @@ require 'world'
 describe "Conways Game of Life" do
 
   let(:world) { World.new }
+  subject { Cell.new(world) }
 
   context "Cell methods" do
-
-    subject { Cell.new(world) }
 
     it "#spawns_at_coordinate" do
       cell = subject.spawn_at_coordinate(1,5)
@@ -62,15 +61,21 @@ describe "Conways Game of Life" do
       expect(cell.neighbours.count).to eq(0)
     end
 
+    it "dies" do
+      subject.die!
+      expect(subject.world.cells).to_not include(subject)
+    end
+
   end
 
   context "Rule #1" do
 
-    subject { Cell.new(world) }
-
     it "Any live cell with fewer than two live neighbours dies, as if caused by under-population" do
-      cell = Cell.new(world)
-      expect(cell.neighbours.count).to eq(0)
+      cell = subject.spawn_at_coordinate(1,0)
+      expect(subject.neighbours.count).to eq(1)
+      world.tick!
+      expect(cell).to be_dead
+      expect(subject.neighbours.count).to eq(0)
     end
 
   end
