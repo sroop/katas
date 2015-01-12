@@ -73,8 +73,11 @@ describe "Conways Game of Life" do
     it "Any live cell with fewer than two live neighbours dies, as if caused by under-population" do
       cell = subject.spawn_at_coordinate(1,0)
       expect(subject.neighbours.count).to eq(1)
+      expect(cell.neighbours.count).to eq(1)
       world.tick!
+      expect(subject).to be_dead
       expect(cell).to be_dead
+      expect(cell.neighbours.count).to eq(0)
       expect(subject.neighbours.count).to eq(0)
     end
 
