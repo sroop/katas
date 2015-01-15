@@ -33,6 +33,10 @@ class Cell
     !world.cells.include?(self)
   end
 
+  def alive?
+    world.cells.include?(self)
+  end
+
   def spawn_at_coordinate(x, y)
     Cell.new(world, x, y)
   end

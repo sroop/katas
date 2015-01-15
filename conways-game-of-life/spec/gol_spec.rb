@@ -66,6 +66,15 @@ describe "Conways Game of Life" do
       expect(subject.world.cells).to_not include(subject)
     end
 
+    it "knows if it is alive" do
+      expect(subject).to be_alive
+    end
+
+    it "knows if it is dead" do
+      subject.die!
+      expect(subject).to be_dead
+    end
+
   end
 
   context "Rule #1" do
