@@ -7,11 +7,12 @@ class Cell
     @x = x
     @y = y
     world.cells << self
+    world.alive_cells << self
   end
 
   def neighbours
     @neighbours = []
-    world.cells.each do |cell|
+    world.alive_cells.each do |cell|
       unless self.equal?(cell)
         (-1..1).each do |x|
           (-1..1).each do |y|
@@ -26,15 +27,21 @@ class Cell
   end
 
   def die!
-    world.cells -= [self]
+    world.dead_cells << self
+    world.alive_cells -= [self]
+  end
+
+  def life!
+    world.alive_cells << self
+    world.dead_cells -= [self]
   end
 
   def dead?
-    !world.cells.include?(self)
+    world.dead_cells.include?(self)
   end
 
   def alive?
-    world.cells.include?(self)
+    world.alive_cells.include?(self)
   end
 
   def spawn_at_coordinate(x, y)
