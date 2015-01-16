@@ -20,6 +20,14 @@ describe "World" do
       expect(world.cells).to eq([subject])
       world.populate
       expect(world.cells.size).to eq(9)
+      expect(subject.neighbours.count).to eq(3)
+      expect(world.cells[4].neighbours.count).to eq(8)
+
+      # How #populate generates a 3x3 world around a single [0,0] cell:
+
+      # [0,2] [1,2] [2,2]
+      # [0,1] [1,1] [2,1]
+      # [0,0] [1,0] [2,0]
     end
 
     it "detects all alive cells" do
