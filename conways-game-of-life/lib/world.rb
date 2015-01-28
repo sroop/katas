@@ -28,4 +28,10 @@ class World
     end
   end
 
+  def populate
+    cells.each do |cell|
+      [alive_cells, dead_cells].sample << cell
+    end
+  end
+
 end

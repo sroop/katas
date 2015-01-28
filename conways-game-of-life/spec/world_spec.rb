@@ -54,6 +54,15 @@ describe "World" do
       expect(world.alive_cells.count).to eq(4)
     end
 
+    it "populates a freshly seeded world with live cells" do
+      expect(world.cells).to eq([subject])
+      world.seed
+      expect(world.alive_cells).to be_empty
+      expect(world.cells.count).to eq(9)
+      world.populate
+      expect(world.alive_cells.count).to be > 0
+    end
+
   end
 
 end
