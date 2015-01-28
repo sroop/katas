@@ -9,7 +9,7 @@ class World
     @rows,@cols = rows,cols
   end
 
-  def populate
+  def seed
     master_cell = cells.first
     (master_cell.x...rows).each do |x|
       (master_cell.x...cols).each do |y|

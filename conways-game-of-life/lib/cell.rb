@@ -7,7 +7,7 @@ class Cell
     @x = x
     @y = y
     world.cells << self
-    world.alive_cells << self
+    world.dead_cells << self
   end
 
   def neighbours
