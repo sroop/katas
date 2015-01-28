@@ -15,6 +15,10 @@ class GameOfLifeWindow < Gosu::Window
     @world.populate
   end
 
+  def needs_cursor?
+    true
+  end
+
   def draw
     draw_quad(0,0,@bg_colour,
               @width,0,@bg_colour,
