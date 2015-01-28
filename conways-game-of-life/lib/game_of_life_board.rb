@@ -4,10 +4,14 @@ require_relative 'world.rb'
 
 class GameOfLifeWindow < Gosu::Window
 
+  attr_accessor :width, :height
+
+  BACKGROUND_COLOUR = Gosu::Color.new(0xffdedede)
+
   def initialize(width=640, height=480 )
-    super @width=width, @height=height, false
+    @width, @height = width, height
+    super width, height, false
     self.caption = "Game Of Life"
-    @bg_colour = Gosu::Color.new(0xffdedede)
 
     @world = World.new(@width/10, @height/10)
     @cell = Cell.new(@world)
@@ -20,10 +24,10 @@ class GameOfLifeWindow < Gosu::Window
   end
 
   def draw
-    draw_quad(0,0,@bg_colour,
-              @width,0,@bg_colour,
-              @width,@height,@bg_colour,
-              0,@height,@bg_colour)
+    draw_quad(0, 0, BACKGROUND_COLOUR,
+              width, 0, BACKGROUND_COLOUR,
+              width, height, BACKGROUND_COLOUR,
+              0, height, BACKGROUND_COLOUR)
   end
 
 end
