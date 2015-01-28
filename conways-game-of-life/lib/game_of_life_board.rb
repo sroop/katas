@@ -12,11 +12,14 @@ class GameOfLifeWindow < Gosu::Window
     @width, @height = width, height
     super width, height, false
     self.caption = "Game Of Life"
+    create_world
+  end
 
-    @world = World.new(@width/10, @height/10)
-    @cell = Cell.new(@world)
-    @world.seed
-    @world.populate
+  def create_world
+    @world = World.new(rows, cols)
+    Cell.new(world)
+    world.seed
+    world.populate
   end
 
   def needs_cursor?
