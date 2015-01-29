@@ -35,6 +35,9 @@ class World
     cells.each do |cell|
       [alive_cells, dead_cells].sample << cell
     end
+    alive_cells.each do |cell|
+      cell.alive_neighbours
+    end
   end
 
 end
