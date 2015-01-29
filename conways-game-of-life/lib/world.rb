@@ -16,9 +16,6 @@ class World
         master_cell.spawn_at_coordinate(x,y) unless [x,y] == [master_cell.x, master_cell.y]
       end
     end
-    cells.each do |cell|
-      cell.assign_neighbours
-    end
   end
 
   def tick!
@@ -34,6 +31,12 @@ class World
   def populate
     cells.each do |cell|
       [alive_cells, dead_cells].sample << cell
+    end
+  end
+
+  def meet_the_neighbours
+    cells.each do |cell|
+      cell.assign_neighbours
     end
     alive_cells.each do |cell|
       cell.alive_neighbours

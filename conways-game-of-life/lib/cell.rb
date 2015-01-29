@@ -13,7 +13,7 @@ class Cell
 
   def alive_neighbours
     @alive_neighbours = []
-    @neighbours.each do |cell|
+    neighbours.each do |cell|
       @alive_neighbours << cell if cell.alive?
     end
     @alive_neighbours
@@ -22,13 +22,13 @@ class Cell
   def assign_neighbours
     @neighbours = []
     world.cells.each do |cell|
-        (-1..1).each do |x|
-          (-1..1).each do |y|
-            if ([self.x, self.y] == [cell.x + x, cell.y + y]) && ([x,y] != [0,0])
-              @neighbours << cell
-            end
+      (-1..1).each do |x|
+        (-1..1).each do |y|
+          if ([self.x, self.y] == [cell.x + x, cell.y + y]) && ([x,y] != [0,0])
+            @neighbours << cell
           end
         end
+      end
     end
   end
 

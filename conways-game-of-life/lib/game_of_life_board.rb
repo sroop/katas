@@ -11,7 +11,7 @@ class GameOfLifeWindow < Gosu::Window
   LIVE_CELL_COLOUR = Gosu::Color.new(0xffff69b4)
   CELL_WIDTH, CELL_HEIGHT = 10, 10
 
-  def initialize(width=640, height=480 )
+  def initialize(width=340, height=80 )
     @width, @height = width, height
     super width, height, false
     self.caption = "Game Of Life"
@@ -24,6 +24,7 @@ class GameOfLifeWindow < Gosu::Window
     Cell.new(world)
     world.seed
     world.populate
+    world.meet_the_neighbours
   end
 
   def needs_cursor?
