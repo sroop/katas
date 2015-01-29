@@ -30,6 +30,10 @@ class GameOfLifeWindow < Gosu::Window
     true
   end
 
+  def update
+    world.tick!
+  end
+
   def draw
     draw_quad(0, 0, BACKGROUND_COLOUR,
               width, 0, BACKGROUND_COLOUR,
