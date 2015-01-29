@@ -1,6 +1,6 @@
 class Cell
 
-  attr_accessor :world, :x, :y
+  attr_accessor :world, :x, :y, :state
   attr_reader :neighbours
 
   def initialize(world, x=0, y=0)
@@ -9,6 +9,8 @@ class Cell
     @y = y
     world.cells << self
     world.dead_cells << self
+    @state = "dead"
+    @neighbours = []
   end
 
   def alive_neighbours
@@ -20,7 +22,6 @@ class Cell
   end
 
   def assign_neighbours
-    @neighbours = []
     world.cells.each do |cell|
       (-1..1).each do |x|
         (-1..1).each do |y|
@@ -35,19 +36,21 @@ class Cell
   def die!
     world.dead_cells << self
     world.alive_cells -= [self]
+    @state = "dead"
   end
 
   def life!
     world.alive_cells << self
     world.dead_cells -= [self]
+    @state = "alive"
   end
 
   def dead?
-    world.dead_cells.include?(self)
+    @state == "dead"
   end
 
   def alive?
-    world.alive_cells.include?(self)
+    @state == "alive"
   end
 
   def spawn_at_coordinate(x, y)
