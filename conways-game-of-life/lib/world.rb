@@ -20,9 +20,9 @@ class World
 
   def tick!
     cells.each do | cell |
-      if cell.neighbours.count < 2 || cell.neighbours.count > 3
+      if cell.alive_neighbours.count < 2 || cell.alive_neighbours.count > 3
         cell.die! if cell.alive?
-      elsif cell.neighbours.count == 3
+      elsif cell.alive_neighbours.count == 3
         cell.life! if cell.dead?
       end
     end

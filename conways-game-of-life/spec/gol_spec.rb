@@ -11,13 +11,15 @@ describe "Game of Life" do
     it "Any live cell with fewer than two live neighbours dies, as if caused by under-population" do
       cell = subject.spawn_at_coordinate(1,0)
       [subject,cell].each(&:life!)
-      expect(subject.neighbours.count).to eq(1)
-      expect(cell.neighbours.count).to eq(1)
+      subject.assign_neighbours
+      expect(subject.alive_neighbours.count).to eq(1)
+      cell.assign_neighbours
+      expect(cell.alive_neighbours.count).to eq(1)
       world.tick!
       expect(subject).to be_dead
       expect(cell).to be_dead
-      expect(cell.neighbours.count).to eq(0)
-      expect(subject.neighbours.count).to eq(0)
+      expect(cell.alive_neighbours.count).to eq(0)
+      expect(subject.alive_neighbours.count).to eq(0)
     end
 
   end
@@ -28,9 +30,10 @@ describe "Game of Life" do
       cell1 = subject.spawn_at_coordinate(1,0)
       cell2 = subject.spawn_at_coordinate(-1,0)
       [subject,cell1,cell2].each(&:life!)
-      expect(subject.neighbours.count).to eq(2)
-      expect(cell1.neighbours.count).to eq(1)
-      expect(cell2.neighbours.count).to eq(1)
+      [subject,cell1,cell2].each(&:assign_neighbours)
+      expect(subject.alive_neighbours.count).to eq(2)
+      expect(cell1.alive_neighbours.count).to eq(1)
+      expect(cell2.alive_neighbours.count).to eq(1)
 
       world.tick!
 
@@ -44,6 +47,7 @@ describe "Game of Life" do
       new_cell2 = subject.spawn_at_coordinate(1,-1)
       new_cell3 = subject.spawn_at_coordinate(-1,1)
       [new_cell1,new_cell2,new_cell3].each(&:life!)
+      [subject,new_cell1,new_cell2,new_cell3].each(&:assign_neighbours)
       world.tick!
 
       expect(subject).to be_alive
@@ -59,7 +63,8 @@ describe "Game of Life" do
       cell3 = subject.spawn_at_coordinate(1,1)
       cell4 = subject.spawn_at_coordinate(1, -1)
       [cell1,cell2,cell3,cell4].each(&:life!)
-      expect(subject.neighbours.count).to eq(4)
+      [subject,cell1,cell2,cell3,cell4].each(&:assign_neighbours)
+      expect(subject.alive_neighbours.count).to eq(4)
       world.tick!
       expect(subject).to be_dead
     end
@@ -73,6 +78,7 @@ describe "Game of Life" do
       cell2 = subject.spawn_at_coordinate(0,-1)
       cell3 = subject.spawn_at_coordinate(-1,1)
       [cell1,cell2,cell3].each(&:life!)
+      [subject,cell1,cell2,cell3].each(&:assign_neighbours)
       expect(subject).to be_dead
       world.tick!
       expect(subject).to be_alive

@@ -22,10 +22,7 @@ describe "World" do
       expect(world.cells.size).to eq(9)
       world.cells.each do |cell|
         expect(cell.dead?).to eq(true)
-        cell.life!
       end
-      expect(subject.neighbours.count).to eq(3)
-      expect(world.cells[4].neighbours.count).to eq(8)
 
       # How #seed generates a 3x3 world around a single [0,0] cell:
 

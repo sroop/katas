@@ -44,63 +44,73 @@ describe "Cell" do
     it "detects a neighbouring live cell to the north" do
       cell = subject.spawn_at_coordinate(0,1)
       cell.life!
-      expect(subject.neighbours.count).to eq(1)
+      subject.assign_neighbours
+      expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the north-east" do
       cell = subject.spawn_at_coordinate(1,1)
       cell.life!
-      expect(subject.neighbours.count).to eq(1)
+      subject.assign_neighbours
+      expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the east" do
       cell = subject.spawn_at_coordinate(1,0)
       cell.life!
-      expect(subject.neighbours.count).to eq(1)
+      subject.assign_neighbours
+      expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the south-east" do
       cell = subject.spawn_at_coordinate(1,-1)
       cell.life!
-      expect(subject.neighbours.count).to eq(1)
+      subject.assign_neighbours
+      expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the south" do
       cell = subject.spawn_at_coordinate(0,-1)
       cell.life!
-      expect(subject.neighbours.count).to eq(1)
+      subject.assign_neighbours
+      expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the south-west" do
       cell = subject.spawn_at_coordinate(-1,-1)
       cell.life!
-      expect(subject.neighbours.count).to eq(1)
+      subject.assign_neighbours
+      expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the west" do
       cell = subject.spawn_at_coordinate(-1,0)
       cell.life!
-      expect(subject.neighbours.count).to eq(1)
+      subject.assign_neighbours
+      expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the north-west" do
       cell = subject.spawn_at_coordinate(1,-1)
       cell.life!
-      expect(subject.neighbours.count).to eq(1)
+      subject.assign_neighbours
+      expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "cannot detect a cell that isn't a neighbour" do
       cell = subject.spawn_at_coordinate(2,0)
       cell.life!
-      expect(cell.neighbours.count).to eq(0)
+      cell.assign_neighbours
+      expect(cell.alive_neighbours.count).to eq(0)
     end
 
     it "cannot detect a neighbouring dead cell" do
       cell = subject.spawn_at_coordinate(1,0)
       cell.life!
-      expect(subject.neighbours.count).to eq(1)
+      subject.assign_neighbours
+      expect(subject.alive_neighbours.count).to eq(1)
       cell.die!
-      expect(subject.neighbours.count).to eq(0)
+      expect(subject.alive_neighbours.count).to eq(0)
     end
 
   end

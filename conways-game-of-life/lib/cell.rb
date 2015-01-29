@@ -10,9 +10,17 @@ class Cell
     world.dead_cells << self
   end
 
-  def neighbours
+  def alive_neighbours
+    @alive_neighbours = []
+    @neighbours.each do |cell|
+      @alive_neighbours << cell if cell.alive?
+    end
+    @alive_neighbours
+  end
+
+  def assign_neighbours
     @neighbours = []
-    world.alive_cells.each do |cell|
+    world.cells.each do |cell|
       unless self.equal?(cell)
         (-1..1).each do |x|
           (-1..1).each do |y|
@@ -23,7 +31,6 @@ class Cell
         end
       end
     end
-    @neighbours
   end
 
   def die!
