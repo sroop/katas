@@ -1,6 +1,7 @@
 class Cell
 
   attr_accessor :world, :x, :y
+  attr_reader :neighbours
 
   def initialize(world, x=0, y=0)
     @world = world
@@ -21,15 +22,13 @@ class Cell
   def assign_neighbours
     @neighbours = []
     world.cells.each do |cell|
-      unless self.equal?(cell)
         (-1..1).each do |x|
           (-1..1).each do |y|
-            if [self.x, self.y] == [cell.x + x, cell.y + y]
+            if ([self.x, self.y] == [cell.x + x, cell.y + y]) && ([x,y] != [0,0])
               @neighbours << cell
             end
           end
         end
-      end
     end
   end
 

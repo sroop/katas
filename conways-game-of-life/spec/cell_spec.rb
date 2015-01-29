@@ -41,6 +41,16 @@ describe "Cell" do
       expect(subject).to be_dead
     end
 
+    it "detects dead and alive neighbouring cells" do
+      [-1,0,1].each do |x|
+        [-1,0,1].each do |y|
+          subject.spawn_at_coordinate(x,y)
+        end
+      end
+      subject.assign_neighbours
+      expect(subject.neighbours.count).to eq(8)
+    end
+
     it "detects a neighbouring live cell to the north" do
       cell = subject.spawn_at_coordinate(0,1)
       cell.life!
