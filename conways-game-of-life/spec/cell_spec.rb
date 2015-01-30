@@ -10,7 +10,7 @@ describe "Cell" do
 
     it "a dead cell gets spawned at a specified coordinate" do
       cell = subject.spawn_at_coordinate(1,5)
-      expect(cell.dead?).to eq(true)
+      expect(cell).to be_dead
       expect(cell.is_a?(Cell)).to eq(true)
       expect(cell.x).to eq(1)
       expect(cell.y).to eq(5)
@@ -35,10 +35,12 @@ describe "Cell" do
     it "knows if it is alive" do
       subject.life!
       expect(subject).to be_alive
+      expect(subject.state).to eq("alive")
     end
 
     it "knows if it is dead" do
       expect(subject).to be_dead
+      expect(subject.state).to eq("dead")
     end
 
     it "detects dead and alive neighbouring cells" do
