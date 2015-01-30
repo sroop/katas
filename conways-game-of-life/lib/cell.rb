@@ -4,9 +4,7 @@ class Cell
   attr_reader :neighbours
 
   def initialize(world, x=0, y=0)
-    @world = world
-    @x = x
-    @y = y
+    @world, @x, @y = world, x, y
     world.cells << self
     world.dead_cells << self
     @state = "dead"
