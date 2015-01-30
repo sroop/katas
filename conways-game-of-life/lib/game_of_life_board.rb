@@ -24,7 +24,9 @@ class GameOfLifeWindow < Gosu::Window
     Cell.new(world)
     world.seed
     world.populate
-    world.meet_the_neighbours
+    world.cells.each do |cell|
+      cell.assign_neighbours
+    end
   end
 
   def needs_cursor?

@@ -40,13 +40,4 @@ class World
     end
   end
 
-  def meet_the_neighbours
-    cells.each do |cell|
-      cell.assign_neighbours
-    end
-    alive_cells.each do |cell|
-      cell.alive_neighbours
-    end
-  end
-
 end
