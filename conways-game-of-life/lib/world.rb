@@ -19,11 +19,16 @@ class World
   end
 
   def tick!
-    cells.each do | cell |
-      if cell.alive_neighbours.count < 2 || cell.alive_neighbours.count > 3
-        cell.die! if cell.alive?
-      elsif cell.alive_neighbours.count == 3
-        cell.life! if cell.dead?
+    cells.each do |cell|
+      case cell.state
+      when "alive"
+        if cell.alive_neighbours.count < 2 || cell.alive_neighbours.count > 3
+          cell.die!
+        end
+      when "dead"
+        if cell.alive_neighbours.count == 3
+          cell.life!
+        end
       end
     end
   end
