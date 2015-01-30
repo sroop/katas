@@ -55,9 +55,13 @@ describe "World" do
       expect(world.cells).to eq([subject])
       world.seed
       expect(world.alive_cells).to be_empty
+      expect(subject).to be_dead
       expect(world.cells.count).to eq(9)
       world.populate
       expect(world.alive_cells.count).to be > 0
+      world.alive_cells.each do |cell|
+        expect(cell).to be_alive
+      end
     end
 
   end

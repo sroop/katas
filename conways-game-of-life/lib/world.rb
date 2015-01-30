@@ -30,7 +30,8 @@ class World
 
   def populate
     cells.each do |cell|
-      [alive_cells, dead_cells].sample << cell
+      cell.state = ["dead", "alive"].sample
+      self.send("#{cell.state}_cells") << cell
     end
   end
 
