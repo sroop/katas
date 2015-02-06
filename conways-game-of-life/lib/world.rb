@@ -24,18 +24,18 @@ class World
   end
 
   def tick!
+    state_change = { pending_death: [], pending_life: [] }
     cells.flatten.each do |cell|
-      case cell.state
-      when "alive"
-        if cell.alive_neighbours.count < 2 || cell.alive_neighbours.count > 3
-          cell.die!
-        end
-      when "dead"
-        if cell.alive_neighbours.count == 3
-          cell.life!
-        end
+      if cell.alive? && (cell.alive_neighbours.count < 2 || cell.alive_neighbours.count > 3)
+        state_change[:pending_death] << cell
+        # cell.die!
+      elsif cell.dead? && (cell.alive_neighbours.count == 3)
+        state_change[:pending_life] << cell
+        # cell.life!
       end
     end
+    state_change[:pending_death].each(&:die!)
+    state_change[:pending_life].each(&:life!)
   end
 
   def populate
