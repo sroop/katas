@@ -4,8 +4,7 @@ require_relative 'world.rb'
 
 class GameOfLifeWindow < Gosu::Window
 
-  attr_accessor :width, :height
-  attr_reader :rows, :cols, :world
+  attr_reader :width, :height, :rows, :cols, :world
 
   BACKGROUND_COLOUR = Gosu::Color.new(0xffdedede)
   LIVE_CELL_COLOUR = Gosu::Color.new(0xffff69b4)
@@ -50,4 +49,4 @@ class GameOfLifeWindow < Gosu::Window
 
 end
 
-GameOfLifeWindow.new(140,140).show
+GameOfLifeWindow.new(240,240).show
