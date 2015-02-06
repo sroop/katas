@@ -1,25 +1,30 @@
 class World
 
-  attr_accessor :cells, :alive_cells, :dead_cells, :rows, :cols
+  attr_accessor :cells, :rows, :cols
 
   def initialize(rows=3,cols=3)
-    @cells = []
-    @alive_cells = []
-    @dead_cells = []
     @rows,@cols = rows,cols
+    @cells = seed
   end
 
   def seed
-    master_cell = cells.first
-    (master_cell.x...rows).each do |x|
-      (master_cell.x...cols).each do |y|
-        master_cell.spawn_at_coordinate(x,y) unless [x,y] == [master_cell.x, master_cell.y]
+    Array.new(rows) do |y|
+      Array.new(cols) do |x|
+        Cell.new(self,x,y)
       end
     end
   end
 
+  def cell_count
+    cells.flatten.count
+  end
+
+  def cell_at_coordinate(x, y)
+    cells[y][x] if cells[y]
+  end
+
   def tick!
-    cells.each do |cell|
+    cells.flatten.each do |cell|
       case cell.state
       when "alive"
         if cell.alive_neighbours.count < 2 || cell.alive_neighbours.count > 3
@@ -34,9 +39,8 @@ class World
   end
 
   def populate
-    cells.each do |cell|
+    cells.flatten.each do |cell|
       cell.state = ["dead", "alive"].sample
-      self.send("#{cell.state}_cells") << cell
     end
   end
 

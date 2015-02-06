@@ -4,21 +4,22 @@ require 'world'
 describe "Game of Life" do
 
   let(:world) { World.new }
-  subject { Cell.new(world) }
+  let(:subject) { world.cells[1][1] }
+  let(:north_west_neighbour) { world.cells[0][2] }
+  let(:west_neighbour) { world.cells[0][1] }
+  let(:north_neighbour) { world.cells[1][2]}
+  let(:east_neighbour) { world.cells[2][1] }
 
   context "Rule #1" do
 
     it "Any live cell with fewer than two live neighbours dies, as if caused by under-population" do
-      cell = subject.spawn_at_coordinate(1,0)
-      [subject,cell].each(&:life!)
-      subject.assign_neighbours
+      [subject, north_west_neighbour].each(&:life!)
       expect(subject.alive_neighbours.count).to eq(1)
-      cell.assign_neighbours
-      expect(cell.alive_neighbours.count).to eq(1)
+      expect(north_west_neighbour.alive_neighbours.count).to eq(1)
       world.tick!
       expect(subject).to be_dead
-      expect(cell).to be_dead
-      expect(cell.alive_neighbours.count).to eq(0)
+      expect(north_west_neighbour).to be_dead
+      expect(north_west_neighbour.alive_neighbours.count).to eq(0)
       expect(subject.alive_neighbours.count).to eq(0)
     end
 
@@ -27,27 +28,19 @@ describe "Game of Life" do
   context "Rule #2" do
 
     it "Any live cell with two live neighbours lives on to the next generation" do
-      cell1 = subject.spawn_at_coordinate(1,0)
-      cell2 = subject.spawn_at_coordinate(-1,0)
-      [subject,cell1,cell2].each(&:life!)
-      [subject,cell1,cell2].each(&:assign_neighbours)
+      [subject,north_west_neighbour,west_neighbour].each(&:life!)
       expect(subject.alive_neighbours.count).to eq(2)
-      expect(cell1.alive_neighbours.count).to eq(1)
-      expect(cell2.alive_neighbours.count).to eq(1)
+      expect(north_west_neighbour.alive_neighbours.count).to eq(2)
+      expect(west_neighbour.alive_neighbours.count).to eq(2)
 
       world.tick!
 
       expect(subject).to be_alive
-      expect(cell1).to be_dead
-      expect(cell2).to be_dead
     end
 
     it "Any live cell with three live neighbours lives on to the next generation" do
-      new_cell1 = subject.spawn_at_coordinate(1,1)
-      new_cell2 = subject.spawn_at_coordinate(1,-1)
-      new_cell3 = subject.spawn_at_coordinate(-1,1)
-      [new_cell1,new_cell2,new_cell3].each(&:life!)
-      [subject,new_cell1,new_cell2,new_cell3].each(&:assign_neighbours)
+      [subject,north_west_neighbour,west_neighbour,north_neighbour].each(&:life!)
+
       world.tick!
 
       expect(subject).to be_alive
@@ -58,12 +51,8 @@ describe "Game of Life" do
   context "Rule #3" do
 
     it "Any live cell with more than three live neighbours dies, as if by overcrowding" do
-      cell1 = subject.spawn_at_coordinate(1,0)
-      cell2 = subject.spawn_at_coordinate(-1,0)
-      cell3 = subject.spawn_at_coordinate(1,1)
-      cell4 = subject.spawn_at_coordinate(1, -1)
-      [cell1,cell2,cell3,cell4].each(&:life!)
-      [subject,cell1,cell2,cell3,cell4].each(&:assign_neighbours)
+      [subject, north_west_neighbour, west_neighbour, east_neighbour, north_neighbour].each(&:life!)
+      raise "looping error or something?"
       expect(subject.alive_neighbours.count).to eq(4)
       world.tick!
       expect(subject).to be_dead
@@ -74,13 +63,13 @@ describe "Game of Life" do
   context "Rule #4" do
 
     it "Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction" do
-      cell1 = subject.spawn_at_coordinate(1,-1)
-      cell2 = subject.spawn_at_coordinate(0,-1)
-      cell3 = subject.spawn_at_coordinate(-1,1)
-      [cell1,cell2,cell3].each(&:life!)
-      [subject,cell1,cell2,cell3].each(&:assign_neighbours)
+      [north_neighbour, east_neighbour, north_west_neighbour].each(&:life!)
+      raise "looping error or something?"
+      expect(subject.alive_neighbours.count).to eq(3)
       expect(subject).to be_dead
+
       world.tick!
+
       expect(subject).to be_alive
     end
 

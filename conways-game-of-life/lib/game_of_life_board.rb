@@ -11,22 +11,13 @@ class GameOfLifeWindow < Gosu::Window
   LIVE_CELL_COLOUR = Gosu::Color.new(0xffff69b4)
   CELL_WIDTH, CELL_HEIGHT = 10, 10
 
-  def initialize(width=340, height=80 )
+  def initialize(width=800, height=600)
     @width, @height = width, height
     super width, height, false
     self.caption = "Game Of Life"
     @rows, @cols = width/CELL_WIDTH, height/CELL_HEIGHT
-    create_world
-  end
-
-  def create_world
     @world = World.new(rows, cols)
-    Cell.new(world)
-    world.seed
     world.populate
-    world.cells.each do |cell|
-      cell.assign_neighbours
-    end
   end
 
   def needs_cursor?
@@ -43,7 +34,7 @@ class GameOfLifeWindow < Gosu::Window
               width, height, BACKGROUND_COLOUR,
               0, height, BACKGROUND_COLOUR)
 
-    world.alive_cells.each do |cell|
+    world.cells.flatten.each do |cell|
       draw_quad(
                 # Bottom left cell corner
                 cell.x * CELL_WIDTH, cell.y * CELL_HEIGHT, LIVE_CELL_COLOUR,
@@ -53,10 +44,10 @@ class GameOfLifeWindow < Gosu::Window
                 cell.x * CELL_WIDTH + CELL_WIDTH, cell.y * CELL_HEIGHT + CELL_HEIGHT, LIVE_CELL_COLOUR,
                 # Top left cell corner
                 cell.x * CELL_WIDTH, cell.y * CELL_HEIGHT + CELL_HEIGHT, LIVE_CELL_COLOUR,
-                )
+                ) if cell.alive?
     end
   end
 
 end
 
-GameOfLifeWindow.new.show
+GameOfLifeWindow.new(140,140).show

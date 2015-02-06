@@ -4,7 +4,7 @@ require 'world'
 describe "Cell" do
 
   let(:world) { World.new }
-  subject { Cell.new(world) }
+  let(:subject) { world.cells[1][1] }
 
   context "Utility methods" do
 
@@ -17,111 +17,94 @@ describe "Cell" do
       expect(cell.world).to eq(subject.world)
     end
 
+    it "knows if it is alive" do
+      subject.life!
+      expect(subject.state).to eq("alive")
+    end
+
+    it "knows if it is dead" do
+      expect(subject.state).to eq("dead")
+    end
+
     it "a dead cell can be brought to life" do
       subject.life!
-      expect(subject.world.alive_cells).to include(subject)
-      expect(subject.world.dead_cells).to_not include(subject)
-      expect(subject.world.cells).to include(subject)
+      expect(subject).to be_alive
     end
 
     it "a live cell can die" do
       subject.life!
       subject.die!
-      expect(subject.world.dead_cells).to include(subject)
-      expect(subject.world.alive_cells).to_not include(subject)
-      expect(subject.world.cells).to include(subject)
-    end
-
-    it "knows if it is alive" do
-      subject.life!
-      expect(subject).to be_alive
-      expect(subject.state).to eq("alive")
-    end
-
-    it "knows if it is dead" do
       expect(subject).to be_dead
-      expect(subject.state).to eq("dead")
+      expect(subject.world.cells.flatten).to include(subject)
     end
 
     it "detects dead and alive neighbouring cells" do
-      [-1,0,1].each do |x|
-        [-1,0,1].each do |y|
-          subject.spawn_at_coordinate(x,y)
-        end
-      end
-      subject.assign_neighbours
-      expect(subject.neighbours.count).to eq(8)
+      expected_cell_neighbours =  [ [0, 0],[1, 0],[2, 0],[0, 1],[2, 1],[0, 2],[1, 2],[2, 2] ]
+      actual_cell_neighbours =  subject.neighbours.map { |cell| [cell.x, cell.y] }
+      expect(actual_cell_neighbours.count).to eq(8)
+      expect(actual_cell_neighbours).to eq(expected_cell_neighbours)
     end
 
     it "detects a neighbouring live cell to the north" do
-      cell = subject.spawn_at_coordinate(0,1)
-      cell.life!
-      subject.assign_neighbours
+      north_cell = world.cells[1][2]
+      north_cell.life!
       expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the north-east" do
-      cell = subject.spawn_at_coordinate(1,1)
-      cell.life!
-      subject.assign_neighbours
+      north_east_cell = world.cells[2][2]
+      north_east_cell.life!
       expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the east" do
-      cell = subject.spawn_at_coordinate(1,0)
-      cell.life!
-      subject.assign_neighbours
+      east_cell = world.cells[2][1]
+      east_cell.life!
       expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the south-east" do
-      cell = subject.spawn_at_coordinate(1,-1)
-      cell.life!
-      subject.assign_neighbours
+      south_east_cell = world.cells[2][0]
+      south_east_cell.life!
       expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the south" do
-      cell = subject.spawn_at_coordinate(0,-1)
-      cell.life!
-      subject.assign_neighbours
+      south_cell = world.cells[1][0]
+      south_cell.life!
       expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the south-west" do
-      cell = subject.spawn_at_coordinate(-1,-1)
-      cell.life!
-      subject.assign_neighbours
+      south_west_cell = world.cells[0][0]
+      south_west_cell.life!
       expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the west" do
-      cell = subject.spawn_at_coordinate(-1,0)
-      cell.life!
-      subject.assign_neighbours
+      west_cell = world.cells[0][1]
+      west_cell.life!
       expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the north-west" do
-      cell = subject.spawn_at_coordinate(1,-1)
-      cell.life!
-      subject.assign_neighbours
+      north_west_cell = world.cells[0][2]
+      north_west_cell.life!
       expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "cannot detect a cell that isn't a neighbour" do
-      cell = subject.spawn_at_coordinate(2,0)
-      cell.life!
-      cell.assign_neighbours
-      expect(cell.alive_neighbours.count).to eq(0)
+      north_west_cell = world.cells[0][2]
+      south_east_cell = world.cells[2][0]
+      north_west_cell.life!
+      expect(south_east_cell.alive_neighbours.count).to eq(0)
     end
 
     it "cannot detect a neighbouring dead cell" do
-      cell = subject.spawn_at_coordinate(1,0)
-      cell.life!
-      subject.assign_neighbours
+      north_cell = world.cells[1][2]
+      north_cell.life!
       expect(subject.alive_neighbours.count).to eq(1)
-      cell.die!
+      north_cell.die!
       expect(subject.alive_neighbours.count).to eq(0)
     end
 
