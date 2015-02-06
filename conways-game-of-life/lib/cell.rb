@@ -9,11 +9,7 @@ class Cell
   end
 
   def alive_neighbours
-    @alive_neighbours = []
-    neighbours.each do |cell|
-      @alive_neighbours << cell if cell.alive?
-    end
-    @alive_neighbours
+    neighbours.select(&:alive?)
   end
 
   def die!
