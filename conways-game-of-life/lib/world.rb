@@ -28,10 +28,8 @@ class World
     cells.flatten.each do |cell|
       if cell.alive? && (cell.alive_neighbours.count < 2 || cell.alive_neighbours.count > 3)
         state_change[:pending_death] << cell
-        # cell.die!
       elsif cell.dead? && (cell.alive_neighbours.count == 3)
         state_change[:pending_life] << cell
-        # cell.life!
       end
     end
     state_change[:pending_death].each(&:die!)

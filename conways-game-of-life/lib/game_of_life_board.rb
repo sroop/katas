@@ -6,8 +6,8 @@ class GameOfLifeWindow < Gosu::Window
 
   attr_reader :width, :height, :rows, :cols, :world
 
-  BACKGROUND_COLOUR = Gosu::Color.new(0xffdedede)
-  LIVE_CELL_COLOUR = Gosu::Color.new(0xffff69b4)
+  BACKGROUND_COLOUR = Gosu::Color.new(0xff0099cc)
+  LIVE_CELL_COLOUR = Gosu::Color.new(0xff22cc66)
   CELL_WIDTH, CELL_HEIGHT = 10, 10
 
   def initialize(width=800, height=600)
@@ -49,4 +49,4 @@ class GameOfLifeWindow < Gosu::Window
 
 end
 
-GameOfLifeWindow.new(240,240).show
+GameOfLifeWindow.new(1000,1000).show
