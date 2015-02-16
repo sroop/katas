@@ -28,6 +28,16 @@ class Cell
     @state == "alive"
   end
 
+  def on_edge?
+    if world.cells.first.include?(self)
+      true
+    elsif world.cells.last.include?(self)
+      true
+    elsif world.cells.select { |row| (row.first == self) || (row.last == self) }.any?
+      true
+    end
+  end
+
   def spawn_at_coordinate(x, y)
     Cell.new(world, x, y)
   end

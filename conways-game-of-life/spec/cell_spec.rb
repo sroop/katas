@@ -108,6 +108,27 @@ describe "Cell" do
       expect(subject.alive_neighbours.count).to eq(0)
     end
 
+    it "knows if it is on the north edge of the world" do
+      north_cell = world.cells[2][1]
+      expect(north_cell).to be_on_edge
+      expect(subject).to_not be_on_edge
+    end
+
+    it "knows if it is on the south edge of the world" do
+      south_cell = world.cells[0][1]
+      expect(south_cell).to be_on_edge
+    end
+
+    it "knows if it is on the east edge of the world" do
+      east_cell = world.cells[1][2]
+      expect(east_cell).to be_on_edge
+    end
+
+    it "knows if it is on the west edge of the world" do
+      west_cell = world.cells[1][0]
+      expect(west_cell).to be_on_edge
+    end
+
   end
 
 end
