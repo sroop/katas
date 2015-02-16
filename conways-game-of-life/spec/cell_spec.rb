@@ -46,7 +46,7 @@ describe "Cell" do
     end
 
     it "detects a neighbouring live cell to the north" do
-      north_cell = world.cells[1][2]
+      north_cell = world.cells[2][1]
       north_cell.life!
       expect(subject.alive_neighbours.count).to eq(1)
     end
@@ -58,19 +58,19 @@ describe "Cell" do
     end
 
     it "detects a neighbouring live cell to the east" do
-      east_cell = world.cells[2][1]
+      east_cell = world.cells[1][2]
       east_cell.life!
       expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the south-east" do
-      south_east_cell = world.cells[2][0]
+      south_east_cell = world.cells[0][2]
       south_east_cell.life!
       expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the south" do
-      south_cell = world.cells[1][0]
+      south_cell = world.cells[0][1]
       south_cell.life!
       expect(subject.alive_neighbours.count).to eq(1)
     end
@@ -82,13 +82,13 @@ describe "Cell" do
     end
 
     it "detects a neighbouring live cell to the west" do
-      west_cell = world.cells[0][1]
+      west_cell = world.cells[1][0]
       west_cell.life!
       expect(subject.alive_neighbours.count).to eq(1)
     end
 
     it "detects a neighbouring live cell to the north-west" do
-      north_west_cell = world.cells[0][2]
+      north_west_cell = world.cells[2][0]
       north_west_cell.life!
       expect(subject.alive_neighbours.count).to eq(1)
     end
@@ -101,7 +101,7 @@ describe "Cell" do
     end
 
     it "cannot detect a neighbouring dead cell" do
-      north_cell = world.cells[1][2]
+      north_cell = world.cells[2][1]
       north_cell.life!
       expect(subject.alive_neighbours.count).to eq(1)
       north_cell.die!
