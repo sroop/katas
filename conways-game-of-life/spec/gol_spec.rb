@@ -32,17 +32,13 @@ describe "Game of Life" do
       expect(subject.alive_neighbours.count).to eq(2)
       expect(north_west_neighbour.alive_neighbours.count).to eq(2)
       expect(west_neighbour.alive_neighbours.count).to eq(2)
-
       world.tick!
-
       expect(subject).to be_alive
     end
 
     it "Any live cell with three live neighbours lives on to the next generation" do
       [subject,north_west_neighbour,west_neighbour,north_neighbour].each(&:life!)
-
       world.tick!
-
       expect(subject).to be_alive
     end
 
@@ -52,7 +48,7 @@ describe "Game of Life" do
 
     it "Any live cell with more than three live neighbours dies, as if by overcrowding" do
       [subject, north_west_neighbour, west_neighbour, east_neighbour, north_neighbour].each(&:life!)
-      raise "looping error or something?"
+      expect(subject).to be_alive
       expect(subject.alive_neighbours.count).to eq(4)
       world.tick!
       expect(subject).to be_dead
@@ -64,12 +60,9 @@ describe "Game of Life" do
 
     it "Any dead cell with exactly three live neighbours becomes a live cell, as if by reproduction" do
       [north_neighbour, east_neighbour, north_west_neighbour].each(&:life!)
-      raise "looping error or something?"
       expect(subject.alive_neighbours.count).to eq(3)
       expect(subject).to be_dead
-
       world.tick!
-
       expect(subject).to be_alive
     end
 
