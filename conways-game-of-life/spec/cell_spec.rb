@@ -5,6 +5,10 @@ describe "Cell" do
 
   let(:world) { World.new }
   let(:subject) { world.cells[1][1] }
+  let(:north_cell) { world.cells[2][1] }
+  let(:east_cell) { world.cells[1][2] }
+  let(:south_cell) { world.cells[0][1] }
+  let(:west_cell) { world.cells[1][0] }
 
   context "Utility methods" do
 
@@ -53,7 +57,6 @@ describe "Cell" do
       end
 
       it "detects a live neighbour to the north" do
-        north_cell = world.cells[2][1]
         north_cell.life!
         expect(subject.alive_neighbours.count).to eq(1)
       end
@@ -65,7 +68,6 @@ describe "Cell" do
       end
 
       it "detects a live neighbour to the east" do
-        east_cell = world.cells[1][2]
         east_cell.life!
         expect(subject.alive_neighbours.count).to eq(1)
       end
@@ -77,7 +79,6 @@ describe "Cell" do
       end
 
       it "detects a live neighbour to the south" do
-        south_cell = world.cells[0][1]
         south_cell.life!
         expect(subject.alive_neighbours.count).to eq(1)
       end
@@ -89,7 +90,6 @@ describe "Cell" do
       end
 
       it "detects a live neighbour to the west" do
-        west_cell = world.cells[1][0]
         west_cell.life!
         expect(subject.alive_neighbours.count).to eq(1)
       end
@@ -101,14 +101,14 @@ describe "Cell" do
       end
 
       it "cannot detect a cell that isn't a neighbour" do
-        north_west_cell = world.cells[0][2]
-        south_east_cell = world.cells[2][0]
+        big_world = World.new(6, 6)
+        north_west_cell = big_world.cells[5][0]
+        no_neighbours = big_world.cells[2][3]
         north_west_cell.life!
-        expect(south_east_cell.alive_neighbours.count).to eq(0)
+        expect(no_neighbours.alive_neighbours.count).to eq(0)
       end
 
       it "detects its neighbour when live, but not when state changes to dead" do
-        north_cell = world.cells[2][1]
         north_cell.life!
         expect(subject.alive_neighbours.count).to eq(1)
         north_cell.die!
@@ -117,30 +117,98 @@ describe "Cell" do
 
     end
 
-    context "Edge of the world" do
+    context "An edgeless world" do
 
-      it "knows if it's to the north" do
-        north_cell = world.cells[2][1]
-        expect(north_cell).to be_on_edge
+      it "cells know if they are on the northern edge" do
+        expect(north_cell.north_edge?).to eq(true)
       end
 
-      it "knows if it's to the south" do
-        south_cell = world.cells[0][1]
-        expect(south_cell).to be_on_edge
+      it "cells know if they are on the southern edge" do
+        expect(south_cell.south_edge?).to eq(true)
       end
 
-      it "knows if it's to the east" do
-        east_cell = world.cells[1][2]
-        expect(east_cell).to be_on_edge
+      it "cells know if they are on the eastern edge" do
+        expect(east_cell.east_edge?).to eq(true)
       end
 
-      it "knows if it's to the west" do
-        west_cell = world.cells[1][0]
-        expect(west_cell).to be_on_edge
+      it "cells know if they are on the western edge" do
+        expect(west_cell.west_edge?).to eq(true)
       end
 
-      it "knows if it isn't on the edge of the world" do
-        expect(subject).to_not be_on_edge
+      it "cells know if they aren't on the edge" do
+        expect(subject.north_edge?).to eq(false)
+        expect(subject.south_edge?).to eq(false)
+        expect(subject.east_edge?).to eq(false)
+        expect(subject.west_edge?).to eq(false)
+      end
+
+      context "Cells that appear on the edge of the board have 8 neighbours in an edgeless world" do
+
+        before { world.cells.flatten.each(&:life!) }
+
+        it "on the eastern edge" do
+          expect(east_cell.alive_neighbours.count).to eq(8)
+          expected_neighbours = [ [1,0], [2,0], [0,0], [1,1], [0,1], [1,2], [2,2], [0,2] ]
+          actual_neighbours =   east_cell.alive_neighbours.map do |cell|
+                                  [cell.x, cell.y]
+                                end
+          expect(actual_neighbours).to match_array(expected_neighbours)
+        end
+
+        it "on the western edge" do
+          expect(west_cell.alive_neighbours.count).to eq(8)
+          expected_neighbours = [ [2,0], [0,0], [1,0], [2,1], [1,1], [2,2], [0,2], [1,2] ]
+          actual_neighbours =   west_cell.alive_neighbours.map do |cell|
+                                  [cell.x, cell.y]
+                                end
+          expect(actual_neighbours).to match_array(expected_neighbours)
+        end
+
+        it "on the northern edge" do
+          expect(north_cell.alive_neighbours.count).to eq(8)
+          expected_neighbours = [ [0,1], [1,1], [2,1], [0,2], [2,2], [0,0], [1,0], [2,0] ]
+          actual_neighbours =   north_cell.alive_neighbours.map do |cell|
+                                  [cell.x, cell.y]
+                                end
+          expect(actual_neighbours).to match_array(expected_neighbours)
+        end
+
+        it "on the southern edge" do
+          expect(south_cell.alive_neighbours.count).to eq(8)
+          expected_neighbours = [ [0,2], [1,2], [2,2], [0,0], [2,0], [0,1], [1,1], [2,1] ]
+          actual_neighbours =   south_cell.alive_neighbours.map do |cell|
+                                  [cell.x, cell.y]
+                                end
+          expect(actual_neighbours).to match_array(expected_neighbours)
+        end
+
+        it "in the middle" do
+          expect(subject.alive_neighbours.count).to eq(8)
+        end
+
+        it "every cell has 8 neighbours in a 3x3 world" do
+          world.cells.flatten.each do |cell|
+            expect(cell.alive_neighbours.count).to eq(8)
+          end
+        end
+
+        it "every cell has 8 neighbours in a bigger 6x6 world" do
+          big_world = World.new(6,6)
+          big_world.cells.flatten.each(&:life!)
+          south_east_corner = big_world.cells[0][5]
+          expect(south_east_corner.alive_neighbours.count).to eq(8)
+          expected_neighbours = [ [4,5], [5,5], [0,5], [4,0], [0,0], [4,1], [5,1], [0,1] ]
+          actual_neighbours =   south_east_corner.alive_neighbours.map do |cell|
+                                  [cell.x, cell.y]
+                                end
+          expect(actual_neighbours).to match_array(expected_neighbours)
+
+          big_world.cells.flatten.each do |cell|
+            expect(cell.alive_neighbours.count).to eq(8)
+          end
+        end
+
+
       end
 
     end
